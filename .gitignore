@@ -1,0 +1,6 @@
+### Default ###
+.project
+.settings
+.classpath
+.idea/
+target/

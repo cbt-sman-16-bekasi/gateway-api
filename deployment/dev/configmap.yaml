@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-service-v1
+  namespace: smi
+  labels:
+    app: gateway-service-v1
+    app.kubernetes.io/component: gateway-service-v1
+    app.kubernetes.io/instance: gateway-service-v1
+data:
+  SPRING_PROFILES_ACTIVE: dev
+  SERVER_PORT: '8080'

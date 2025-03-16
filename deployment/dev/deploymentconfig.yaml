@@ -1,0 +1,57 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: gateway-service-v1
+  namespace: smi
+  labels:
+    app: gateway-service-v1
+    app.kubernetes.io/component: gateway-service-v1
+    app.kubernetes.io/instance: gateway-service-v1
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ConfigChange
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    deploymentconfig: gateway-service-v1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        deploymentconfig: gateway-service-v1
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+    spec:
+      containers:
+        - name: gateway-service-v1
+          image: image-registry.openshift-image-registry.svc:5000/smi/gateway-service-v1:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: gateway-service-v1
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+          env:
+            - name: TZ
+              value: Asia/Jakarta
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      imagePullSecrets:
+        - name: nexus-image-secret-smi
+      schedulerName: default-scheduler

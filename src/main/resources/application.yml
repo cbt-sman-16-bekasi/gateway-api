@@ -1,0 +1,42 @@
+basePath: /gateway-service
+server:
+  port: 8080
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          custom:
+            token-uri: lb://AUTHORIZATION-SERVICE/auth/validate
+  application:
+    name: ejourney-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin, RETAIN_FIRST
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+      routes:
+        - id: AUTH-SERVICE
+          uri: https://c6dd0484-5f8d-4d44-b376-2bb662f32d34.mock.pstmn.io
+          predicates:
+            - Path=${basePath}/**
+          filters:
+            - RewritePath=${basePath}/(?<segment>.*), /$\{segment}
+authentication:
+  enabled: false
+redis:
+  host: 34.101.154.7
+  port: 63796
+  database: 0
