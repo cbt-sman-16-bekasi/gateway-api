@@ -29,7 +29,7 @@ spring:
               - PATCH
       routes:
         - id: AUTH-SERVICE
-          uri: https://c6dd0484-5f8d-4d44-b376-2bb662f32d34.mock.pstmn.io
+          uri: https://osprey-big-wildcat.ngrok-free.app
           predicates:
             - Path=${basePath}/**
           filters:
