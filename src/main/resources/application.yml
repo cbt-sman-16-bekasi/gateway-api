@@ -28,12 +28,18 @@ spring:
               - OPTIONS
               - PATCH
       routes:
-        - id: AUTH-SERVICE
-          uri: https://osprey-big-wildcat.ngrok-free.app
+        - id: PRODUCTION-SERVICE
+          uri: http://172.17.0.1:8081
           predicates:
             - Path=${basePath}/**
           filters:
             - RewritePath=${basePath}/(?<segment>.*), /$\{segment}
+        - id: DEVELOPMENT-SERVICE
+          uri: https://osprey-big-wildcat.ngrok-free.app
+          predicates:
+            - Path=${basePath}/dev/**
+          filters:
+            - RewritePath=${basePath}/dev/(?<segment>.*), /$\{segment}
 authentication:
   enabled: false
 redis:
