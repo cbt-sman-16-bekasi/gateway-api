@@ -29,7 +29,7 @@ spring:
               - PATCH
       routes:
         - id: PRODUCTION-SERVICE
-          uri: http://172.17.0.1:8081
+          uri: https://osprey-big-wildcat.ngrok-free.app
           predicates:
             - Path=${basePath}/**
           filters:
