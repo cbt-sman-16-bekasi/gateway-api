@@ -29,7 +29,7 @@ spring:
               - PATCH
       routes:
         - id: PRODUCTION-SERVICE
-          uri: https://33d5-178-128-105-174.ngrok-free.app
+          uri: http://172.17.0.1:8081
           predicates:
             - Path=${basePath}/**
           filters:
